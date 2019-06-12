@@ -3,12 +3,10 @@
       become: yes
       become_user: root
       tasks:
-      - name: Allow all access from belos networks to this host
+      - name: Enable ufw
         ufw:
           state: enabled      
           rule: limit
-        loop:
-          - 192.168.0.0/16
       - name: Allow port 22 (SSH)
         ufw:
           rule: limit  
@@ -19,6 +17,7 @@
           rule: allow
           port: 80
           from_ip: "192.168.0.0/16"
+        when: "inventory_hostname == 'belos-pc1'"  
       - name: Allow port 3142
         ufw:
           rule: allow
